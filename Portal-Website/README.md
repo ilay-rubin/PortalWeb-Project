@@ -2,7 +2,7 @@
 The Production Students Portal: https://st-portal.online/
 The Development Students Portal: https://rt-dev.xyz/
 # Steps To Upgrade On Production 
-Work-Dir: k8s-master-production:/home/ilay/DEVOPS/PORTAL/FS_Portal #NOTE Check Before Running The ./server/.env & values Files.
+Work-Dir: k8s-master-production:/xxx/xxx/xxx/PORTAL/FS_Portal #NOTE Check Before Running The ./server/.env & values Files.
 
 Pay attention to the tag name, that is, every time you upload a version, just increase the number by 1.
 
@@ -14,7 +14,7 @@ Pay attention to the tag name, that is, every time you upload a version, just in
 
 
 # Steps To Upgrade On Development 
-Work-Dir: development-testing:/home/ilay/devops/PORTAL/FS_Portal #NOTE Check Before Running The ./server/.env & values Files.
+Work-Dir: k8s-master-development:/xxx/xxx/xxx/PORTAL/FS_Portal #NOTE Check Before Running The ./server/.env & values Files.
 
 Pay attention to the tag name, that is, every time you upload a version, just increase the number by 1.
 
