@@ -1,0 +1,16 @@
+FROM node:12.13.0-alpine
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Jerusalem
+RUN mkdir -p /opt/server
+RUN mkdir -p /opt/client
+COPY server /opt/server
+RUN mkdir -p /opt/server/client/Logs
+RUN mkdir -p /opt/server/client/files
+RUN mkdir -p /opt/server/client/syllabus
+COPY client /opt/client
+COPY env.sh /opt/client
+RUN cd /opt/client; npm install; npm install -g @angular/cli;sh env.sh 6; npm run build ;sh env.sh 5;  npm run build 
+WORKDIR /opt/server
+EXPOSE 3050
+RUN npm install
+CMD ["npm","run","dev"]

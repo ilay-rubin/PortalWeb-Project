@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.PvPvc.crmLogs.pvName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    volume: {{ .Values.PvPvc.crmLogs.label }}
+spec:
+  storageClassName: {{ .Values.PvPvc.crmLogs.storageClass }}
+  capacity:
+    storage: {{ .Values.PvPvc.crmLogs.storage }}
+  accessModes: {{ .Values.PvPvc.pvAccessModes }}
+  persistentVolumeReclaimPolicy: {{ .Values.PvPvc.pvReclaimPolicy }}
+  nfs:
+    server: {{ .Values.PvPvc.crmLogs.nfs.server }}
+    path: {{ .Values.PvPvc.crmLogs.nfs.path }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.PvPvc.crmLogs.pvcName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: {{ .Values.PvPvc.crmLogs.storageClass }}
+  accessModes: {{ .Values.PvPvc.pvAccessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.PvPvc.crmLogs.storage }}
+  selector:
+    matchLabels:
+      volume: {{ .Values.PvPvc.crmLogs.label }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.PvPvc.crmDocs.pvName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    volume: {{ .Values.PvPvc.crmDocs.label }}
+spec:
+  storageClassName: {{ .Values.PvPvc.crmDocs.storageClass }}
+  capacity:
+    storage: {{ .Values.PvPvc.crmDocs.storage }}
+  accessModes: {{ .Values.PvPvc.pvAccessModes }}
+  persistentVolumeReclaimPolicy: {{ .Values.PvPvc.pvReclaimPolicy }}
+  nfs:
+    server: {{ .Values.PvPvc.crmDocs.nfs.server }}
+    path: {{ .Values.PvPvc.crmDocs.nfs.path }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.PvPvc.crmDocs.pvcName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: {{ .Values.PvPvc.crmDocs.storageClass }}
+  accessModes: {{ .Values.PvPvc.pvAccessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.PvPvc.crmDocs.storage }}
+  selector:
+    matchLabels:
+      volume: {{ .Values.PvPvc.crmDocs.label }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.PvPvc.crmSyllabus.pvName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    volume: {{ .Values.PvPvc.crmSyllabus.label }}
+spec:
+  storageClassName: {{ .Values.PvPvc.crmSyllabus.storageClass }}
+  capacity:
+    storage: {{ .Values.PvPvc.crmSyllabus.storage }}
+  accessModes: {{ .Values.PvPvc.pvAccessModes }}
+  persistentVolumeReclaimPolicy: {{ .Values.PvPvc.pvReclaimPolicy }}
+  nfs:
+    server: {{ .Values.PvPvc.crmSyllabus.nfs.server }}
+    path: {{ .Values.PvPvc.crmSyllabus.nfs.path }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.PvPvc.crmSyllabus.pvcName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: {{ .Values.PvPvc.crmSyllabus.storageClass }}
+  accessModes: {{ .Values.PvPvc.pvAccessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.PvPvc.crmSyllabus.storage }}
+  selector:
+    matchLabels:
+      volume: {{ .Values.PvPvc.crmSyllabus.label }}

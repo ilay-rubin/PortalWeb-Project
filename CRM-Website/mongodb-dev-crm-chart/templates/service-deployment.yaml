@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+  - port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.targetPort }}
+  selector:
+    app: {{ .Values.app.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  strategy:
+    type: {{ .Values.deployment.strategy.type }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      containers:
+      - image: {{ .Values.deployment.image }}
+        name: {{ .Values.deployment.containerName }}
+        env:  
+          - name: TZ
+            value: {{ .Values.deployment.timezone }}
+        ports:
+        - containerPort: {{ .Values.deployment.containerPort }}
+        volumeMounts:
+        - name: {{ .Values.volume.name }}
+          mountPath: {{ .Values.volume.mountPath }}
+      nodeSelector:
+        {{ .Values.deployment.nodeSelector_key }}: "{{ .Values.deployment.nodeSelector_value }}"
+      volumes:
+      - name: {{ .Values.volume.name }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.volume.pvcName }}

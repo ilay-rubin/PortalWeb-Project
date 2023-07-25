@@ -1,0 +1,10 @@
+FROM node:14.17.0-alpine
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Jerusalem
+WORKDIR /opt/server
+COPY server /opt/server
+RUN mkdir -p ./client/logs
+RUN mkdir -p ./client/files
+EXPOSE 3000
+RUN npm install 
+CMD ["npm","start"]

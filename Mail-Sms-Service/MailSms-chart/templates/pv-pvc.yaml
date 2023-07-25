@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.PvPvc.MailSms.pvName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    volume: {{ .Values.PvPvc.MailSms.label }}
+spec:
+  storageClassName: {{ .Values.PvPvc.MailSms.storageClass }}
+  capacity:
+    storage: {{ .Values.PvPvc.MailSms.storage }}
+  accessModes: {{ .Values.PvPvc.MailSms.pvAccessModes }}
+  persistentVolumeReclaimPolicy: {{ .Values.PvPvc.MailSms.pvReclaimPolicy }}
+  nfs:
+    server: {{ .Values.PvPvc.MailSms.nfs.server }}
+    path: {{ .Values.PvPvc.MailSms.nfs.path }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.PvPvc.MailSms.pvcName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: {{ .Values.PvPvc.MailSms.storageClass }}
+  accessModes: {{ .Values.PvPvc.MailSms.pvAccessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.PvPvc.MailSms.storage }}
+  selector:
+    matchLabels:
+      volume: {{ .Values.PvPvc.MailSms.label }}

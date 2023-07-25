@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+spec:
+  selector:
+    app: {{ .Values.app.name }}
+  ports:
+  - port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.targetPort }}
+  externalIPs: 
+    - {{ .Values.service.externalIP }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  strategy:
+    type: {{ .Values.deployment.strategy.type }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.deployment.strategy.maxUnavailable }}
+      maxSurge: {{ .Values.deployment.strategy.maxSurge }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      containers:
+      - name: {{ .Values.deployment.containerName }}
+        image: {{ .Values.deployment.image }}
+        imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+        env:
+        - name: TZ
+          value: {{ .Values.deployment.timezone }}
+        ports:
+        - containerPort: {{ .Values.deployment.containerPort }}
+        volumeMounts:
+        - name: {{ .Values.volume.sslname }}
+          mountPath: {{ .Values.volume.sslmountPath }}
+        - name: {{ .Values.volume.CrmDocsName }}
+          mountPath: {{ .Values.volume.CrmDocsMountPath }}
+        - name: {{ .Values.volume.rtcvLogsName }}
+          mountPath: {{ .Values.volume.rtcvLogsMountPath }}
+      imagePullSecrets:
+      - name: {{ .Values.container.imagePullSecrets }}
+      nodeSelector:
+        {{ .Values.container.nodeSelector_key }}: "{{ .Values.container.nodeSelector_value }}"
+      volumes:
+      - name: {{ .Values.volume.sslname }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.volume.pvcssl }}
+      - name: {{ .Values.volume.CrmDocsName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.volume.CrmDocsPvc }}
+      - name: {{ .Values.volume.rtcvLogsName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.volume.rtcvLogsPvc }}

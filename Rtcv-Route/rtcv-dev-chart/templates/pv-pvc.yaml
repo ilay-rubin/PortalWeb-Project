@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.PvPvc.rtcvLogs.pvName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    volume: {{ .Values.PvPvc.rtcvLogs.label }}
+spec:
+  storageClassName: {{ .Values.PvPvc.rtcvLogs.storageClass }}
+  capacity:
+    storage: {{ .Values.PvPvc.rtcvLogs.storage }}
+  accessModes: {{ .Values.PvPvc.rtcvLogs.pvAccessModes }}
+  persistentVolumeReclaimPolicy: {{ .Values.PvPvc.rtcvLogs.pvReclaimPolicy }}
+  nfs:
+    server: {{ .Values.PvPvc.rtcvLogs.nfs.server }}
+    path: {{ .Values.PvPvc.rtcvLogs.nfs.path }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.PvPvc.rtcvLogs.pvcName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: {{ .Values.PvPvc.rtcvLogs.storageClass }}
+  accessModes: {{ .Values.PvPvc.rtcvLogs.pvAccessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.PvPvc.rtcvLogs.storage }}
+  selector:
+    matchLabels:
+      volume: {{ .Values.PvPvc.rtcvLogs.label }}
