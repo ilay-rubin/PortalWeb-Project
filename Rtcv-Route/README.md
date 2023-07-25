@@ -1,8 +1,8 @@
-# rtcv
+# Rtcv-Route
 routes to enter leads inti DB
 
 # Steps To Upgrade On Production 
-Work-Dir: k8s-master-production:/xxx/xxx/xxx/CRM/rtcv #NOTE Check Before Running The ./server/.env & values Files.
+Work-Dir: k8s-master-production:/xxx/xxx/xxx/CRM/Rtcv-Route #NOTE Check Before Running The ./server/.env & values Files.
 
 Pay attention to the tag name, that is, every time you upload a version, just increase the number by 1.
 
@@ -14,7 +14,7 @@ Pay attention to the tag name, that is, every time you upload a version, just in
 
 
 # Steps To Upgrade On Development 
-Work-Dir: k8s-master-development:/xxx/xxx/xxx/CRM/rtcv #NOTE Check Before Running The ./server/.env & values Files.
+Work-Dir: k8s-master-development:/xxx/xxx/xxx/CRM/Rtcv-Route #NOTE Check Before Running The ./server/.env & values Files.
 
 Pay attention to the tag name, that is, every time you upload a version, just increase the number by 1.
 
