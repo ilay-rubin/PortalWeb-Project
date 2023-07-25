@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+spec:
+  selector:
+    app: {{ .Values.app.name }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+  externalIPs:
+    - {{ .Values.service.externalIP }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  strategy:
+    type: {{ .Values.deployment.strategy.type }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.deployment.strategy.maxUnavailable }}
+      maxSurge: {{ .Values.deployment.strategy.maxSurge }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      containers:
+      - image: {{ .Values.deployment.image }}
+        name: {{ .Values.deployment.containerName }}
+        imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+        env:  
+          - name: TZ
+            value: {{ .Values.deployment.timezone }}
+          - name: MONGO_URL
+            value: {{ .Values.container.env.MONGO_URL }}
+        ports:  
+          - containerPort: {{ .Values.deployment.containerPort }}
+        volumeMounts:
+        - name: {{ .Values.volume.sslname }}
+          mountPath: {{ .Values.volume.sslmountPath }}
+        - name: {{ .Values.volume.uploadsname }}
+          mountPath: {{ .Values.volume.uploadsmountPath }}
+        - name: {{ .Values.volume.unickoname }}
+          mountPath: {{ .Values.volume.unickomountPath }}
+      imagePullSecrets:
+      - name: {{ .Values.container.imagePullSecrets }}
+      nodeSelector:
+        {{ .Values.deployment.nodeSelector_key }}: "{{ .Values.deployment.nodeSelector_value }}"
+      volumes:
+      - name: {{ .Values.volume.uploadsname }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.volume.uploadspvc }}
+      - name: {{ .Values.volume.sslname }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.volume.pvcssl }}
+      - name: {{ .Values.volume.unickoname }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.volume.unickopvc }}

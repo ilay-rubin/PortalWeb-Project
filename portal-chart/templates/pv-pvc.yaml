@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.volume.pvName }}
+  namespace: {{ .Values.namespace }} 
+  labels:
+    volume: {{ .Values.volume.label }}
+spec:
+  storageClassName: {{ .Values.volume.storageClass }}
+  capacity:
+    storage: {{ .Values.volume.storage }}
+  accessModes: {{ .Values.volume.pvAccessModes }}
+  persistentVolumeReclaimPolicy: {{ .Values.volume.pvReclaimPolicy }}
+  nfs:
+    server: {{ .Values.volume.nfs.server }}
+    path: {{ .Values.volume.nfs.path }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.volume.pvcName }}
+  namespace: {{ .Values.namespace }} 
+spec:
+  storageClassName: {{ .Values.volume.storageClass }}
+  accessModes: {{ .Values.volume.pvAccessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.volume.storage }}
+  selector:           
+    matchLabels:
+      volume: {{ .Values.volume.label }}   
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.Unickovolume.pvName }}
+  namespace: {{ .Values.namespace }} 
+  labels:
+    volume: {{ .Values.Unickovolume.label }}
+spec:
+  storageClassName: {{ .Values.Unickovolume.storageClass }}
+  capacity:
+    storage: {{ .Values.Unickovolume.storage }}
+  accessModes: {{ .Values.volume.pvAccessModes }}
+  persistentVolumeReclaimPolicy: {{ .Values.volume.pvReclaimPolicy }}
+  nfs:
+    server: {{ .Values.Unickovolume.nfs.server }}
+    path: {{ .Values.Unickovolume.nfs.path }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.Unickovolume.pvcName }}
+  namespace: {{ .Values.namespace }} 
+spec:
+  storageClassName: {{ .Values.Unickovolume.storageClass }}
+  accessModes: {{ .Values.volume.pvAccessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.Unickovolume.storage }}
+  selector:           
+    matchLabels:
+      volume: {{ .Values.Unickovolume.label }}   

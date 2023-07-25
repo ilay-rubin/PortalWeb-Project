@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mongoExpress.deployment.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.mongoExpress.app.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mongoExpress.app.name }}
+    spec:
+      containers:
+      - name: {{ .Values.mongoExpress.deployment.containerName }}
+        image: {{ .Values.mongoExpress.deployment.image }}
+        ports:
+        - containerPort: {{ .Values.mongoExpress.deployment.containerPort }}
+        env:
+        - name: TZ
+          value: {{ .Values.mongoExpress.deployment.timezone }}
+        - name: ME_CONFIG_MONGODB_SERVER
+          value: "{{ .Values.service.name }}"
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.mongoExpress.secret.name }}
+              key: {{ .Values.mongoExpress.secret.MONGO_INITDB_ROOT_USERNAME }}
+        - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.mongoExpress.secret.name }}
+              key: {{ .Values.mongoExpress.secret.MONGO_INITDB_ROOT_PASSWORD }}
+        - name: ME_CONFIG_BASICAUTH_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.mongoExpress.secret.name }}
+              key: {{ .Values.mongoExpress.secret.basicAuthUsername }}
+        - name: ME_CONFIG_BASICAUTH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.mongoExpress.secret.name }}
+              key: {{ .Values.mongoExpress.secret.basicAuthPassword }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.mongoExpress.service.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  externalIPs:
+    - {{ .Values.mongoExpress.service.externalIP }}
+  ports:
+    - port: {{ .Values.mongoExpress.service.port }}
+      targetPort: {{ .Values.mongoExpress.deployment.containerPort }}
+  selector:
+    app: {{ .Values.mongoExpress.app.name }}

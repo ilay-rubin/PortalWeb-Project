@@ -1,0 +1,34 @@
+# pv-pvc.yml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.volume.pvName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  capacity:
+    storage: {{ .Values.volume.storage }}
+  accessModes: {{ .Values.volume.pvAccessModes }}
+  persistentVolumeReclaimPolicy: {{ .Values.volume.pvReclaimPolicy }}
+  storageClassName: {{ .Values.volume.storageClassName }}
+  local:
+    path: {{ .Values.volume.localPath }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: {{ .Values.volume.nodeSelectorKey }}
+          operator: In
+          values:
+          - "{{ .Values.volume.nodeSelectorValue }}"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.volume.pvcName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes: {{ .Values.volume.pvcAccessModes }}
+  storageClassName: {{ .Values.volume.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.volume.storage }}
