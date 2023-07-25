@@ -1,9 +1,9 @@
-# vod-route 
+# Vod-Route 
 Log-in Route that works with VOD files. 
 
 # Steps To Upgrade The Code on Production
 
-Work-Dir: k8s-master-production:/xxx/xxx/xxx/PORTAL/vod-route #NOTE Check the ".env" & "values" files. 
+Work-Dir: k8s-master-production:/xxx/xxx/xxx/PORTAL/Vod-Route #NOTE Check the ".env" & "values" files. 
 
 Pay attention to the tag name, that is, every time you upload a version, just increase the number by 1.
 
@@ -15,7 +15,7 @@ Pay attention to the tag name, that is, every time you upload a version, just in
 
 # Steps To Upgrade The Code on Development
 
-Work-Dir: k8s-master-development:/xxx/xxx/xxx/PORTAL/vod-route #NOTE Check the ".env" & "values" files. 
+Work-Dir: k8s-master-development:/xxx/xxx/xxx/PORTAL/Vod-Route #NOTE Check the ".env" & "values" files. 
 
 Pay attention to the tag name, that is, every time you upload a version, just increase the number by 1.
 
